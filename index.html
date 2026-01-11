@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Club San Martín de Tucumán - Sitio Oficial Del Hincha</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Iconos (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Fuentes de Google -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              casm: {
+                red: "#D30000",
+                dark: "#8B0000",
+                black: "#1a1a1a",
+                gray: "#f4f4f4",
+              },
+            },
+            fontFamily: {
+              sans: ["Roboto", "sans-serif"],
+              display: ["Oswald", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      .font-display {
+        font-family: "Oswald", sans-serif;
+        text-transform: uppercase;
+      }
+
+      .accordion-content {
+        transition: max-height 0.3s ease-out;
+        max-height: 0;
+        overflow: hidden;
+      }
+
+      .accordion-content.active {
+        max-height: 500px;
+      }
+
+      .rotate-icon {
+        transition: transform 0.3s ease;
+      }
+
+      .rotate-icon.active {
+        transform: rotate(180deg);
+      }
+
+      /* Estilos para el Muro del Hincha */
+      .muro-item {
+        break-inside: avoid;
+        margin-bottom: 1.5rem;
+        transition: all 0.3s ease;
+      }
+
+      .muro-item:hover {
+        transform: scale(1.02) rotate(1deg);
+        z-index: 10;
+      }
+
+      .muro-container {
+        column-count: 1;
+        column-gap: 1.5rem;
+      }
+
+      @media (min-width: 768px) {
+        .muro-container {
+          column-count: 2;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .muro-container {
+          column-count: 3;
+        }
+      }
+
+      .sticky-note {
+        background: #fff9c4;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+        transform: rotate(-1deg);
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100 flex flex-col min-h-screen text-gray-800">
+    <!-- NAVEGACIÓN -->
+    <nav class="bg-casm-red text-white sticky top-0 z-50 shadow-md">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center h-20">
+          <div class="flex items-center gap-3">
+            <div
+              class="w-12 h-12 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow-sm"
+            >
+              <img
+                src="Imagenes/logo2_1_20330.png"
+                alt="Escudo CASM"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://via.placeholder.com/50?text=CASM'"
+              />
+            </div>
+            <div class="leading-tight">
+              <span class="block font-display text-2xl tracking-wide font-bold"
+                >SAN MARTÍN</span
+              >
+              <span class="block text-xs font-light tracking-widest opacity-90"
+                >DE TUCUMÁN</span
+              >
+            </div>
+          </div>
+
+          <div
+            class="hidden md:flex space-x-8 text-sm font-medium tracking-wide uppercase"
+          >
+            <a href="#inicio" class="hover:text-gray-200 transition-all"
+              >Inicio</a
+            >
+            <a href="#noticias" class="hover:text-gray-200 transition-all"
+              >Noticias</a
+            >
+            <a href="#resultados" class="hover:text-gray-200 transition-all"
+              >Fútbol</a
+            >
+            <a
+              href="#muro"
+              class="hover:text-gray-200 transition-all"
+              >El Muro del hincha </a
+            >
+          </div>
+
+          <button id="mobile-menu-btn" class="md:hidden p-2 text-white">
+            <i data-lucide="menu" class="w-8 h-8"></i>
+          </button>
+        </div>
+
+        <div
+          id="mobile-menu"
+          class="hidden md:hidden pb-4 border-t border-red-700 mt-2"
+        >
+          <a
+            href="#inicio"
+            class="block py-3 px-2 border-b border-red-700 hover:bg-red-800 font-display"
+            >Inicio</a
+          >
+          <a
+            href="#noticias"
+            class="block py-3 px-2 border-b border-red-700 hover:bg-red-800 font-display"
+            >Noticias</a
+          >
+          <a
+            href="#resultados"
+            class="block py-3 px-2 border-b border-red-700 hover:bg-red-800 font-display"
+            >Resultados</a
+          >
+          <a href="#muro" class="block py-3 px-2 hover:bg-red-800 font-display"
+            >El Muro del Hincha</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <header
+      id="inicio"
+      class="relative h-[500px] flex items-center justify-center bg-zinc-900 text-white overflow-hidden"
+    >
+      <img
+        src="Imagenes/estadio.jpg"
+        alt="Fondo Estadio"
+        class="absolute inset-0 w-full h-full object-cover opacity-50"
+        onerror="this.style.display='none'"
+      />
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80"
+      ></div>
+      <div class="relative z-10 container mx-auto px-4 text-center">
+        <span
+          class="block text-casm-red font-bold tracking-[0.2em] mb-2 uppercase text-sm"
+          >El sitio oficial del hincha</span
+        >
+        <h1
+          class="text-6xl md:text-8xl font-display font-bold mb-4 leading-none uppercase"
+        >
+          Blog 1907 <br />
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-400"
+            >Ciudadela</span
+          >
+        </h1>
+        <p
+          class="text-xl md:text-2xl font-light text-gray-200 mb-8 max-w-2xl mx-auto italic"
+        >
+          "En el mundo este es mi lugar, Ciudadela barrio popular."
+        </p>
+        <div class="flex flex-col md:flex-row gap-4 justify-center">
+          <a
+            href="#muro"
+            class="px-8 py-3 bg-casm-red hover:bg-red-700 text-white font-bold rounded uppercase tracking-wider transition shadow-lg flex items-center justify-center gap-2"
+          >
+            <i data-lucide="camera" class="w-5 h-5"></i> Ver El Muro
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- SECCIÓN DE NOTICIAS -->
+    <section id="noticias" class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div
+          class="flex justify-between items-end mb-10 border-b-2 border-gray-100 pb-4"
+        >
+          <h2 class="text-4xl font-display text-casm-black font-bold">
+            Actualidad <span class="text-casm-red">C.A.S.M.</span>
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Noticia Principal -->
+          <article
+            class="col-span-1 md:col-span-2 lg:col-span-2 relative group overflow-hidden rounded-lg shadow-xl cursor-pointer h-96"
+          >
+            <img
+              src="Imagenes/elecciones"
+              alt="Elecciones"
+              class="absolute inset-0 w-full h-full object-cover transition duration-500 group-hover:scale-105"
+              onerror="this.src='https://via.placeholder.com/800x400?text=Elecciones+2025'"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"
+            ></div>
+            <div class="absolute bottom-0 left-0 p-8 text-white">
+              <span
+                class="bg-casm-red px-3 py-1 text-xs font-bold uppercase rounded mb-3 inline-block"
+                >Elecciones 2025</span
+              >
+              <h3 class="text-3xl md:text-4xl font-display font-bold mb-2">
+                ¡Ganó unidad roja y blanca!
+              </h3>
+              <p class="text-gray-300 hidden md:block max-w-xl">
+                La lista conformada por Oscar Mirkin fue la vencedora con el 65%
+                de los votos.
+              </p>
+            </div>
+          </article>
+          <!-- Mas noticias... -->
+          <article
+            class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition"
+          >
+            <div class="h-48 bg-gray-200 overflow-hidden">
+              <img
+                src="Imagenes/pileta2.jpeg"
+                alt="Pileta"
+                class="w-full h-full object-cover"
+                onerror="this.src='https://via.placeholder.com/400x200?text=Pileta+Natalio+Mirkin'"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="text-xl font-display font-bold text-gray-900">
+                Se reinagura la pileta
+              </h3>
+              <p class="text-gray-600 text-sm mt-3">
+                Luego de varios años la pileta del complejo vuelve a funcionar
+                para toda la familia ciruja.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESULTADOS -->
+    <section id="resultados" class="py-16 bg-gray-50 border-y border-gray-200">
+      <div class="container mx-auto px-4 text-center">
+        <h2
+          class="text-3xl font-display font-bold text-gray-900 mb-10 inline-block border-b-4 border-casm-red pb-2"
+        >
+          Último Resultado
+        </h2>
+        <div
+          class="max-w-3xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden"
+        >
+          <div class="flex items-center justify-around p-8">
+            <div class="flex-1">
+              <img
+                src="Imagenes/moron.png"
+                alt="Moron"
+                class="w-16 h-16 mx-auto mb-2"
+                onerror="this.src='https://via.placeholder.com/60?text=DEP'"
+              />
+              <span class="font-display font-bold">D. Morón</span>
+            </div>
+            <div class="text-5xl font-display font-bold px-8">0 - 0</div>
+            <div class="flex-1">
+              <img
+                src="Imagenes/logo2_1_20330.png"
+                alt="CASM"
+                class="w-16 h-16 mx-auto mb-2"
+                onerror="this.src='https://via.placeholder.com/60?text=CASM'"
+              />
+              <span class="font-display font-bold">San Martín</span>
+            </div>
+          </div>
+          <div
+            class="bg-zinc-900 text-gray-400 py-3 text-sm uppercase tracking-widest font-bold"
+          >
+            Finalizado - Eliminados por ventaja deportiva
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NUEVA SECCIÓN: EL MURO DEL HINCHA (Reemplaza Contacto) -->
+    <section id="muro" class="py-20 bg-zinc-900 text-white relative">
+      <!-- Decoración de fondo -->
+      <div
+        class="absolute inset-0 opacity-10 pointer-events-none overflow-hidden"
+      >
+        <h2
+          class="text-[20rem] font-display font-black absolute -top-20 -left-20 leading-none"
+        >
+          CIUDADELA
+        </h2>
+      </div>
+
+      <div class="container mx-auto px-4 relative z-10">
+        <div class="text-center mb-12">
+          <h2 class="text-5xl font-display font-bold">
+            El Muro del <span class="text-casm-red">Hincha</span>
+          </h2>
+          <p class="text-gray-400 mt-4 max-w-2xl mx-auto">
+            Fotos, recuerdos, videos y el sentimiento Ciruja. Subí tu aporte
+            enviándolo a nuestras redes sociales.
+          </p>
+        </div>
+
+        <!-- Contenedor Masonry del Muro -->
+        <div class="muro-container">
+          <!-- Nota adhesiva (Texto/Nota) -->
+          <div class="muro-item p-6 sticky-note text-gray-900 rounded-sm">
+            <i data-lucide="quote" class="text-casm-red w-6 h-6 mb-2"></i>
+            <p class="font-medium text-lg leading-tight mb-4">
+              "No se explica, se siente. Desde los 5 años yendo a la Bolívar con
+              mi viejo. San Martín es mi vida."
+            </p>
+            <span
+              class="text-xs font-bold uppercase border-t border-gray-300 pt-2 block"
+              >Juan Pablo, Barrio Norte</span
+            >
+          </div>
+
+          <!-- Foto Histórica -->
+          <div
+            class="muro-item bg-white p-2 shadow-xl rounded-sm group overflow-hidden"
+          >
+            <div class="relative overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=600&auto=format&fit=crop"
+                alt="Hinchada"
+                class="w-full grayscale group-hover:grayscale-0 transition duration-500"
+              />
+              <div
+                class="absolute bottom-2 right-2 bg-casm-red text-white p-1 rounded-full"
+              >
+                <i data-lucide="image" class="w-4 h-4"></i>
+              </div>
+            </div>
+            <p
+              class="text-gray-800 text-xs font-bold mt-2 uppercase text-center"
+            >
+              Recuerdo de los 90s - La Ciudadela
+            </p>
+          </div>
+
+          <!-- Video (Placeholder con estilo de video) -->
+          <div
+            class="muro-item bg-black rounded-lg overflow-hidden border-2 border-casm-red shadow-lg group relative"
+          >
+            <div
+              class="aspect-video bg-zinc-800 flex items-center justify-center relative"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=600&auto=format&fit=crop"
+                class="w-full h-full object-cover opacity-60"
+              />
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div
+                  class="w-16 h-16 bg-casm-red rounded-full flex items-center justify-center group-hover:scale-110 transition cursor-pointer"
+                >
+                  <i
+                    data-lucide="play"
+                    class="fill-current text-white w-8 h-8 ml-1"
+                  ></i>
+                </div>
+              </div>
+            </div>
+            <div class="p-3 bg-zinc-800">
+              <p class="text-xs font-bold uppercase tracking-widest">
+                Recibimiento 2024 (Video)
+              </p>
+            </div>
+          </div>
+
+          <!-- Otro Recuerdo -->
+          <div class="muro-item bg-white p-2 shadow-xl rounded-sm">
+            <img
+              src="https://images.unsplash.com/photo-1518091043644-c1d4457512c6?q=80&w=600&auto=format&fit=crop"
+              class="w-full"
+            />
+            <div class="p-3">
+              <p class="text-gray-800 text-sm italic">
+                "El Santo siempre presente, en las buenas y en las malas mucho
+                más."
+              </p>
+            </div>
+          </div>
+
+          <!-- Nota Corta -->
+          <div
+            class="muro-item bg-casm-red p-6 text-white rounded-lg shadow-lg rotate-1"
+          >
+            <h4 class="font-display text-2xl mb-2">Dato Histórico</h4>
+            <p class="text-sm opacity-90">
+              ¿Sabías que el primer estadio estuvo ubicado en la zona de las
+              actuales calles Alberdi y Las Heras?
+            </p>
+          </div>
+
+          <!-- Foto del Estadio Actual -->
+          <div
+            class="muro-item bg-white p-2 shadow-xl rounded-sm group overflow-hidden -rotate-1"
+          >
+            <img
+              src="https://images.unsplash.com/photo-1551958219-acbc608c6377?q=80&w=600&auto=format&fit=crop"
+              class="w-full"
+            />
+            <p
+              class="text-gray-800 text-xs font-bold mt-2 uppercase text-center"
+            >
+              Nuestra Casa - La Ciudadela
+            </p>
+          </div>
+        </div>
+
+        <!-- Botón de acción para el muro -->
+        <div class="mt-16 text-center">
+          <button
+            class="px-10 py-4 bg-white text-casm-red font-display font-bold text-xl rounded-full hover:bg-casm-red hover:text-white transition-all shadow-xl"
+          >
+            ¡Enviá tu foto o nota!
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- INFO DE CONTACTO (Versión Compacta integrada al final) -->
+    <section class="bg-casm-black text-white py-12 border-t border-red-900">
+      <div
+        class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10"
+      >
+        <div class="flex items-center gap-4">
+          <i data-lucide="map-pin" class="text-casm-red w-10 h-10"></i>
+          <div>
+            <h4 class="font-display font-bold text-lg">Sede Social</h4>
+            <p class="text-gray-400 text-sm">Bolívar 1960, S.M. de Tucumán</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <i data-lucide="mail" class="text-casm-red w-10 h-10"></i>
+          <div>
+            <h4 class="font-display font-bold text-lg">Correo Oficial</h4>
+            <p class="text-gray-400 text-sm">prensa@casm.com.ar</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-4">
+          <i data-lucide="instagram" class="text-casm-red w-10 h-10"></i>
+          <div>
+            <h4 class="font-display font-bold text-lg">Instagram Hincha</h4>
+            <p class="text-gray-400 text-sm">@jfedediaz / @casmoficial</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-black text-gray-500 py-10 text-sm">
+      <div
+        class="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center"
+      >
+        <div class="mb-4 md:mb-0">
+          <span
+            class="block text-white font-display text-2xl uppercase tracking-widest font-bold mb-1"
+            >C.A.S.M.</span
+          >
+          <p>Blog 1907 - Sitio oficial del Hincha Ciruja</p>
+        </div>
+        <div class="flex gap-6">
+          <a
+            href="https://www.facebook.com/jorgefdiaz34"
+            target="_blank"
+            class="hover:text-white transition"
+            ><i data-lucide="facebook"></i
+          ></a>
+          <a
+            href="https://www.instagram.com/jfedediaz/"
+            target="_blank"
+            class="hover:text-white transition"
+            ><i data-lucide="instagram"></i
+          ></a>
+          <a href="#" class="hover:text-white transition"
+            ><i data-lucide="twitter"></i
+          ></a>
+          <a href="#" class="hover:text-white transition"
+            ><i data-lucide="youtube"></i
+          ></a>
+        </div>
+      </div>
+      <div
+        class="text-center mt-8 pt-8 border-t border-gray-900 opacity-50 text-xs tracking-widest"
+      >
+        &copy; 2026 JORGE FEDERICO DÍAZ - PERIODISMO INDEPENDIENTE - TODOS LOS
+        DERECHOS RESERVADOS.
+      </div>
+    </footer>
+
+    <script>
+      lucide.createIcons();
+
+      // Menú móvil
+      const btnMenu = document.getElementById("mobile-menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
+      btnMenu.addEventListener("click", () =>
+        mobileMenu.classList.toggle("hidden")
+      );
+
+      // Smooth scroll para navegación interna
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          document.querySelector(this.getAttribute("href")).scrollIntoView({
+            behavior: "smooth",
+          });
+          if (!mobileMenu.classList.contains("hidden")) {
+            mobileMenu.classList.add("hidden");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
