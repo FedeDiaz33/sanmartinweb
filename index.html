@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es" class="overflow-x-hidden">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- SEGURIDAD: Content Security Policy (CSP) mejorado -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;">
+
+  <meta name="referrer" content="no-referrer-when-downgrade">
+
+  <title>Club San Martín de Tucumán - Sitio Oficial Del Hincha</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Iconos (Lucide) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!---->
+  <!-- Fuentes de Google -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap"
+    rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            casm: {
+              red: '#A30000',
+              dark: '#8B0000',
+              black: '#1a1a1a',
+              gray: '#f4f4f4'
+            }
+          },
+          fontFamily: {
+            sans: ['Oswald', 'sans-serif'],
+            display: ['Oswald', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    html,
+    body {
+      max-width: 100%;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Oswald', sans-serif;
+      scroll-behavior: smooth;
+      /* SEGURIDAD: Evita la selección de texto innecesaria */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    .font-display {
+      font-family: 'Oswald', sans-serif;
+      text-transform: uppercase;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease-out;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .muro-item {
+      break-inside: avoid;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .muro-item:hover {
+      transform: scale(1.03) translateY(-5px);
+      z-index: 10;
+    }
+
+    .muro-container {
+      column-count: 1;
+      column-gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .muro-container {
+        column-count: 2;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .muro-container {
+        column-count: 3;
+      }
+    }
+
+    .sticky-note {
+      background: #fff9c4;
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+      transform: rotate(-1deg);
+    }
+
+    @keyframes pulse-red {
+      0% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+      }
+
+      70% {
+        box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+      }
+    }
+
+    .countdown-container {
+      background: #A30000;
+      /* Rojo CASM */
+      color: #ffffff;
+      padding: 20px 30px;
+      border-radius: 4px;
+      box-shadow: 8px 8px 0px #1a1a1a;
+      text-align: center;
+      border: 2px solid #ffffff;
+      min-width: 320px;
+    }
+
+    .title {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      padding-bottom: 5px;
+    }
+
+    .timer {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .time-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .number {
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      margin-top: 5px;
+      opacity: 0.8;
+      letter-spacing: 1px;
+    }
+
+    .match-info {
+      margin-top: 15px;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Estilo cuando la cuenta llega a cero */
+    #finished-msg {
+      display: none;
+      font-size: 1.5rem;
+      font-weight: bold;
+      padding: 10px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    /* Pequeño detalle: "El Santo" latiendo */
+    .santo-tag {
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: #ffffff;
+      margin-bottom: 5px;
+      display: block;
+      letter-spacing: 3px;
+    }
+  </style>
+
+  <!-- SEGURIDAD: Anti-Clickjacking ajustado para evitar errores en modo previsualización -->
+  <script>
+      (function () {
+        // Solo ejecutar si no estamos en un entorno de desarrollo/blob conocido
+        if (self !== top && !window.location.href.includes('blob:')) {
+          try {
+            if (top.location.host !== self.location.host) {
+              top.location = self.location;
+            }
+          } catch (e) {
+            // Si el navegador bloquea el acceso a 'top', es que estamos en un frame de origen distinto
+            console.warn("Navegación bloqueada por seguridad del navegador en el frame.");
+          }
+        }
+      })();
+  </script>
+</head>
+
+<body class="bg-gray-100 flex flex-col min-h-screen text-gray-800">
+
+  <!-- NAVEGACIÓN -->
+  <nav class="bg-casm-red text-white sticky top-0 z-50 shadow-md w-full">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-center h-20">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+          <div
+            class="w-12 h-12 bg-white rounded-full flex items-center justify-center overflow-hidden border-2 border-white shadow-sm transition hover:rotate-12">
+            <img src="Imagenes/escudo san martin alta calidad png fondo transparente.png" alt="Escudo CASM"
+              class="w-10 h-10 object-contain" onerror="this.src='https://via.placeholder.com/40?text=CASM'">
+          </div>
+          <div class="leading-tight">
+            <span class="block font-display text-2xl tracking-wide font-bold">SAN MARTÍN</span>
+            <span class="block text-xs font-light tracking-widest opacity-90">DE TUCUMÁN</span>
+          </div>
+        </div>
+
+        <div class="hidden md:flex space-x-8 text-sm font-medium tracking-wide uppercase">
+          <a href="#inicio" class="hover:text-yellow-400 transition-all">Inicio</a>
+          <a href="#noticias" class="hover:text-yellow-400 transition-all">Noticias</a>
+          <a href="#resultados" class="hover:text-yellow-400 transition-all">Fútbol</a>
+          <a href="#streaming" class="hover:text-yellow-400 transition-all">En Vivo</a>
+          <a href="#muro" class="hover:text-yellow-400 transition-all">Muro</a>
+        </div>
+
+        <button id="mobile-menu-btn" class="md:hidden p-2 text-white hover:bg-red-700 rounded transition">
+          <i data-lucide="menu" class="w-8 h-8"></i>
+        </button>
+      </div>
+
+      <div id="mobile-menu"
+        class="hidden md:hidden pb-4 border-t border-red-700 mt-2 bg-casm-red overflow-hidden transition-all duration-300">
+        <a href="#inicio" class="block py-3 px-4 hover:bg-red-800 font-display">Inicio</a>
+        <a href="#noticias" class="block py-3 px-4 hover:bg-red-800 font-display">Noticias</a>
+        <a href="#resultados" class="block py-3 px-4 hover:bg-red-800 font-display">Fútbol</a>
+        <a href="#streaming" class="block py-3 px-4 hover:bg-red-800 font-display">En Vivo</a>
+        <a href="#muro" class="block py-3 px-4 hover:bg-red-800 font-display">El Muro del Hincha</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header id="inicio"
+    class="relative h-[600px] flex items-center justify-center bg-zinc-900 text-white overflow-hidden w-full">
+    <img src="Imagenes/CASM-scaled.jpg" alt="Estadio" class="absolute inset-0 w-full h-full object-cover opacity-40">
+    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80"></div>
+    <div class="relative z-10 container mx-auto px-4 text-center">
+      <span class="block text-casm-red font-bold tracking-[0.2em] mb-2 uppercase text-sm animate-bounce">El sitio
+        del socio</span>
+      <h1 class="text-6xl md:text-9xl font-display font-bold mb-1 leading-none uppercase drop-shadow-2xl">
+        Socios activos <br> <span class="text-casm-red bg-clip-text bg-gradient-to-b from-white to-gray-500">CASM</span>
+      </h1>
+      <p class="text-xl md:text-2xl font-light text-gray-400 mb-7 max-w-2xl mx-auto italic">
+        "Unite a nuestra comunidad de Facebook"
+      </p>
+      <div class="flex flex-col md:flex-row gap-4 justify-center">
+        <a href="https://www.facebook.com/groups/sociosactivoscasm/" target="_blank"
+          class="px-8 py-3 bg-casm-red hover:bg-red-700 text-white font-bold rounded uppercase tracking-wider transition-all transform hover:scale-105 shadow-lg flex items-center justify-center gap-2">
+          <i data-lucide="Facebook" class="w-5 h-5"></i>CLICK AQUÍ PARA UNIRTE
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- SECCIÓN DE NOTICIAS -->
+  <section id="noticias" class="py-20 bg-white w-full">
+    <div class="container mx-auto px-4">
+      <div class="flex justify-between items-end mb-12 border-b-2 border-gray-100 pb-4 reveal">
+        <h2 class="text-4xl font-display text-casm-black font-bold">Actualidad <span
+            class="text-casm-red">C.A.S.M.</span></h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <article
+          class="reveal col-span-1 md:col-span-2 lg:col-span-2 relative group overflow-hidden rounded-xl shadow-xl cursor-pointer h-[450px]">
+          <img src="Imagenes/maipuvssanmartin.webp" alt="Noticia"
+            class="absolute inset-0 w-full h-full object-cover transition duration-700 group-hover:scale-110">
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90"></div>
+          <div class="absolute bottom-0 left-0 p-8 text-white">
+            <span class="bg-casm-red px-3 py-1 text-xs font-bold uppercase rounded mb-3 inline-block">Primera
+              nacional</span>
+            <h3 class="text-4xl font-display font-bold mb-2">¡Tercera fecha confirmada!</h3>
+            <p class="text-gray-300 hidden md:block max-w-xl">El Santo recibe a Maipú el domingo 1 de Marzo a las 17:30
+              hs
+              en el estadio "La Ciudadela" se espera un estadio lleno en su totalidad </p>
+          </div>
+        </article>
+
+        <article
+          class="reveal bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-2xl transition-all group">
+          <div class="h-52 overflow-hidden relative">
+            <img src="Imagenes/caco garcia.webp" alt="socios"
+              class="w-full h-full object-cover transition duration-500 group-hover:scale-105">
+          </div>
+          <div class="p-6">
+            <h3 class="text-xl font-display font-bold text-gray-900 group-hover:text-casm-red transition">El Caco fuera
+              por lesión</h3>
+            <p class="text-gray-600 text-xl mt-3 mb-4">El Mediocampista sufrió una lesión en el partido contra Almagro y
+              se perderá los próximos encuentros.
+            </p>
+            <button
+              class="text-casm-red font-bold text-xs uppercase tracking-widest flex items-center gap-1 hover:gap-2 transition-all">
+              Noticia en desarrollo <i data-lucide="arrow-right" class="w-4 h-4"></i></button>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- EL MURO DEL HINCHA -->
+  <section id="muro" class="py-24 bg-zinc-900 text-white relative w-full overflow-hidden">
+    <div class="absolute inset-0 opacity-5 pointer-events-none flex items-center justify-center">
+      <h2 class="text-[15rem] md:text-[25rem] font-display font-black leading-none select-none">CIUDADELA</h2>
+    </div>
+    <!--Contenedor de muro-->
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center mb-16 reveal">
+        <h2 class="text-6xl font-display font-bold">El Muro del <span class="text-casm-red">Hincha</span></h2>
+        <p class="text-gray-400 mt-4 max-w-2xl mx-auto text-lg">Fotos, recuerdos y el sentimiento puro del hincha.
+          <br>Hacé click en el <i data-lucide="heart" class="inline w-4 h-4 text-casm-red"></i> de tus fotos favoritas.
+        </p>
+      </div>
+
+      <div class="muro-container">
+        <!--No se explica-->
+        <div class="muro-item p-6 sticky-note text-gray-900 rounded-sm reveal" style="transition-delay: 300ms;">
+          <i data-lucide="quote" class="text-casm-red w-8 h-8 mb-4"></i>
+          <p class="font-bold text-xl leading-tight mb-6">"No se explica, se siente. Desde los 5 años yendo a la Bolívar
+            con mi viejo. San Martín es mi vida."</p>
+          <div class="flex justify-between items-center border-t border-gray-300 pt-4">
+            <span class="text-xs font-bold uppercase">Juan Pablo, B° Norte</span>
+            <button class="like-btn flex items-center gap-1 text-gray-500 hover:text-red-600 transition"
+              data-likes="42">
+              <i data-lucide="heart" class="w-4 h-4"></i> <span class="text-xs font-bold">42</span>
+            </button>
+          </div>
+        </div>
+        <!--Video-->
+        <div class="muro-item bg-white p-3 shadow-2xl rounded-sm group reveal" style="transition-delay: 300ms;">
+          <video src="Imagenes/videosanmartin.mp4" class="w-full" target="_blank" controls></video>
+          <div class="p-4 text-gray-900">
+            <p class="italic text-sm">"Reviví el recibimiento contra Sarmiento de Junin."</p>
+            <div class="flex justify-between items-center mt-4">
+              <span class="text-[10px] font-bold text-casm-red">VIDEO DE LA SEMANA</span>
+              <button class="like-btn flex items-center gap-1 text-gray-300 hover:text-red-600 transition"
+                data-likes="89">
+                <i data-lucide="heart" class="w-4 h-4"></i> <span class="text-xs font-bold">189</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!--El santo siempre presente-->
+        <div class="muro-item bg-white p-3 shadow-2xl rounded-sm group reveal" style="transition-delay: 300ms;">
+          <img src="Imagenes/Rosario1.jpeg" class="w-full">
+          <div class="p-4 text-gray-900">
+            <p class="italic text-sm"> El club más convocante del norte </p>
+            <div class="flex justify-between items-center mt-4">
+              <span class="text-[10px] font-bold text-casm-red">FOTO EN ROSARIO</span>
+              <button class="like-btn flex items-center gap-1 text-gray-300 hover:text-red-600 transition"
+                data-likes="89">
+                <i data-lucide="heart" class="w-4 h-4"></i> <span class="text-xs font-bold">89</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <!--Dato Historico-->
+        <div class="muro-item bg-casm-red p-4 text-white rounded-2xl shadow-xl rotate-2 reveal"
+          style="transition-delay: 300ms;">
+          <h4 class="font-display text-2xl mb-4 italic">Dato Histórico</h4>
+          <p class="text-lg opacity-90 leading-snug">¿Sabías que el primer estadio estuvo ubicado en la zona de las
+            actuales calles Alberdi y Las Heras?</p>
+          <div class="mt-6 flex items-center gap-2">
+            <i data-lucide="info" class="w-5 h-5"></i>
+            <span class="text-xs uppercase font-bold">Efemerides Cirujas</span>
+          </div>
+        </div>
+        <!--Nuestro barrrio-->
+        <div class="muro-item bg-white p-2 shadow-2xl rounded-sm group reveal" style="transition-delay: 300ms;">
+          <div class="relative overflow-hidden">
+            <img src="Imagenes/ciudadela.jpg" alt="Hinchada"
+              class="w-full grayscale group-hover:grayscale-0 transition duration-500">
+            <div
+              class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition flex items-center justify-center">
+              <button
+                class="opacity-0 group-hover:opacity-100 bg-casm-red text-white p-3 rounded-full transition-all scale-50 group-hover:scale-100 like-btn"
+                data-likes="128">
+                <i data-lucide="heart" class="w-6 h-6 fill-current"></i>
+              </button>
+            </div>
+          </div>
+          <div class="p-8 bg-white text-gray-900">
+            <p class="text-sm font-bold uppercase tracking-widest text-center">Vista desde arriba</p>
+            <p class="text-[10px] text-gray-400 text-center mt-1">@jorgefdiaz</p>
+          </div>
+        </div>
+
+
+
+      </div>
+
+      <!--Envianos tu analisis-->
+      <div class="mt-20 text-center reveal">
+        <a href="mailto:jorgefedericodiaz@gmail.com">
+          <button id="cta-analisis"
+            class="px-12 py-5 bg-white text-casm-red font-display font-bold text-2xl rounded-full hover:bg-casm-red hover:text-white transition-all shadow-2xl transform hover:scale-110 active:scale-95 uppercase">
+            ¡Envianos tu análisis!
+          </button>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTADOS -->
+  <section id="resultados" class="py-16 bg-zinc-50 border-y border-gray-200 w-full">
+    <div class="container mx-auto px-4 text-center reveal">
+      <h2
+        class="text-3xl font-display font-bold text-gray-900 mb-10 inline-block border-b-4 border-casm-red pb-2 uppercase tracking-tighter">
+        Último Encuentro</h2>
+      <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden">
+        <div class="flex flex-col md:flex-row items-center justify-around p-10 gap-8">
+          <div class="flex-1 text-center">
+            <div class="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center p-4">
+              <img src="Imagenes/almagro.png" alt="Almagro" class="w-full h-full">
+            </div>
+            <span class="font-display font-bold text-2xl block">Almagro</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <div class="text-6xl font-display font-bold px-8 py-2 bg-casm-gray rounded-lg">0 - 1</div>
+            <span class="mt-4 px-4 py-1 bg-gray-100 rounded-full text-[10px] font-bold uppercase text-gray-500">
+              Gol de Nicolas Ferreyra a los 2 minutos del primer tiempo
+            </span>
+          </div>
+          <div class="flex-1 text-center">
+            <div class="w-24 h-24 mx-auto mb-4 bg-gray-200 rounded-full flex items-center justify-center p-4">
+              <img src="Imagenes/escudo san martin alta calidad png fondo transparente.png" alt="CASM"
+                class="w-full h-full">
+            </div>
+            <span class="font-display font-bold text-2xl block">San Martín</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--VIDEO DEL GOL-->
+  <section id="video-gol" class="py-16 bg-casm-black text-white w-full">
+    <div class="container mx-auto px-4 text-center reveal">
+      <h2
+        class="text-3xl font-display font-bold text-gray-100 mb-10 inline-block border-b-4 border-casm-red pb-2 uppercase tracking-tighter">
+        Gol Destacado - Gentileza de Filial Ciruja BsAs</h2>
+      <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-black border border-zinc-800"
+        style="padding-top: 56.25%;">
+        <video src="Imagenes/Gol de Nico Ferreyra vs Almagro.mp4" class="absolute inset-0 w-full h-full"
+          controls></video>
+      </div>
+    </div>
+  </section>
+
+  <!--RELOJ-->
+  <div class="countdown-container">
+    <div class="title" id="event-title">PRÓXIMO PARTIDO</div>
+
+    <div id="timer" class="timer">
+      <div class="time-block">
+        <span id="days" class="number">00</span>
+        <span class="label">Días</span>
+      </div>
+      <div class="time-block">
+        <span id="hours" class="number">00</span>
+        <span class="label">Hs</span>
+      </div>
+      <div class="time-block">
+        <span id="minutes" class="number">00</span>
+        <span class="label">Min</span>
+      </div>
+      <div class="time-block">
+        <span id="seconds" class="number">00</span>
+        <span class="label">Seg</span>
+      </div>
+    </div>
+
+    <div id="finished-msg">DOMINGO 17:30 HS </div>
+
+    <div class="flex justify-center gap-6 mt-6 ">
+      <img src="Imagenes/escudosanmartin.png" alt="Escudo CASM" class="w-20 h-16 object-contain">
+      <img src="Imagenes/Escudo_del_Club_Deportivo_Maipu.svg.png" alt="Escudo Maipú" class="w-20 h-16 object-contain">
+    </div>
+
+  </div>
+  <div class="match-info" id="match-detail">San Martín vs Dep Maipú
+    <br> Estadio La Ciudadela
+  </div>
+  </div>
+  </div>
+
+  <script>
+    // ==========================================
+    // CONFIGURACIÓN: EDITA LA FECHA AQUÍ
+    // Formato: "Mes Día, Año Hora:Minuto:Segundo"
+    // ==========================================
+    const targetDate = new Date("Mar 1, 2026 17:30:00").getTime();
+    // ==========================================
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      // Cálculos de tiempo
+      const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+      // Mostrar resultados con ceros a la izquierda
+      document.getElementById("days").textContent = String(d).padStart(2, '0');
+      document.getElementById("hours").textContent = String(h).padStart(2, '0');
+      document.getElementById("minutes").textContent = String(m).padStart(2, '0');
+      document.getElementById("seconds").textContent = String(s).padStart(2, '0');
+
+      // Si la cuenta terminó
+      if (distance < 0) {
+        clearInterval(interval);
+        document.getElementById("timer").style.display = "none";
+        document.getElementById("finished-msg").style.display = "block";
+        document.getElementById("event-title").textContent = "¡DÍA DE PARTIDO!";
+      }
+    }
+
+    // Iniciar intervalo
+    const interval = setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+
+  <!-- STREAMING -->
+  <section id="streaming" class="py-20 bg-casm-black text-white w-full text-center">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4 reveal">
+        <div>
+          <h2 class="text-4xl font-display font-bold leading-none">Transmisión <span class="text-casm-red">En
+              Vivo</span></h2>
+          <p class="text-gray-500 mt-2 font-light uppercase tracking-widest text-sm">Escuchá al Santo donde quiera que
+            estés</p>
+        </div>
+        <div class="flex items-center gap-3 bg-zinc-800 px-6 py-3 rounded-full border border-zinc-700 pulse-animation">
+          <span class="relative flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+          </span>
+          <span class="text-sm font-bold tracking-widest uppercase">Aire: Radio Ciudadela</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div class="lg:col-span-3 reveal">
+          <div class="relative w-full rounded-2xl overflow-hidden shadow-2xl bg-black border border-zinc-800"
+            style="padding-top: 56.25%;">
+            <div class="absolute inset-0 flex flex-col items-center justify-center bg-zinc-900 bg-opacity-95">
+              <i data-lucide="radio" class="w-20 h-20 text-casm-red mb-4 animate-pulse"></i>
+              <p class="text-xl font-display font-bold">Transmisión oficial disponible en días de partido</p>
+              <a href="https://play.google.com/store/search?q=afa+play&c=apps&hl=es_AR" target="_blank"><i
+                  class="text-xl"> Descarga la
+                  app de AFA PLAY haciendo
+                  click aquí</i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-1 flex flex-col gap-6 reveal">
+          <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+            <h3 class="font-display font-bold text-xl mb-4 border-b border-zinc-800 pb-2">Programación</h3>
+            <p class="text-sm text-gray-400 italic">No hay vivos programados actualmente.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-black text-gray-500 py-16 text-sm border-t border-zinc-900 w-full">
+    <div class="container mx-auto px-4 text-center">
+      <span class="block text-white font-display text-4xl uppercase tracking-[0.2em] font-bold mb-2">C.A.S.M
+      </span>
+      <p class="text-gray-800 font-light tracking-widest uppercase text-xs mb-8">SOCIOS ACTIVOS - Pasión sin fronteras
+      </p>
+      <div class="text-center pt-8 border-t border-zinc-900 opacity-50 text-[10px] tracking-[0.4em] uppercase">
+        &copy; 2026 JORGE FEDERICO DÍAZ Programador & Administradaor de comunidades <br> TODOS LOS DERECHOS RESERVADOS
+      </div>
+    </div>
+  </footer>
+
+  <!-- FUNCIONALIDAD -->
+  <script>
+    lucide.createIcons();
+
+    // SEGURIDAD: Prevenir click derecho
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // SEGURIDAD: Prevenir teclas de desarrollador
+    document.onkeydown = function (e) {
+      if (e.keyCode == 123) return false;
+      if (e.ctrlKey && e.shiftKey && e.keyCode == 'I'.charCodeAt(0)) return false;
+      if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+    };
+
+    // Menú móvil
+    const btnMenu = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    btnMenu.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      lucide.createIcons();
+    });
+
+    // Reveal on scroll
+    const revealElements = document.querySelectorAll('.reveal');
+    const scrollReveal = () => {
+      const triggerBottom = window.innerHeight * 0.85;
+      revealElements.forEach(el => {
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < triggerBottom) el.classList.add('active');
+      });
+    };
+    window.addEventListener('scroll', scrollReveal);
+    window.addEventListener('load', scrollReveal);
+  </script>
+
+</body>
+
+</html>
